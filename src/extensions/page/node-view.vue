@@ -6,12 +6,12 @@
     :class="{ 'no-shadow': exportImage }"
     :style="{
       '--umo-page-background': page.background,
-      '--umo-page-margin-top': (page.margin?.top ?? '0') + 'cm',
-      '--umo-page-margin-bottom': (page.margin?.bottom ?? '0') + 'cm',
-      '--umo-page-margin-left': (page.margin?.left ?? '0') + 'cm',
-      '--umo-page-margin-right': (page.margin?.right ?? '0') + 'cm',
-      '--umo-page-width': pageSize.width + 'cm',
-      '--umo-page-height': pageSize.height + 'cm',
+      '--umo-page-margin-top': `${page.margin?.top ?? '0'}cm`,
+      '--umo-page-margin-bottom': `${page.margin?.bottom ?? '0'}cm`,
+      '--umo-page-margin-left': `${page.margin?.left ?? '0'}cm`,
+      '--umo-page-margin-right': `${page.margin?.right ?? '0'}cm`,
+      '--umo-page-width': `${pageSize.width}cm`,
+      '--umo-page-height': `round(up, ${pageSize.height}cm, 1px)`,
     }"
   >
     <tooltip
@@ -33,7 +33,7 @@
     >
       <div class="umo-page-node-header" contenteditable="false">
         <div
-          class="umo-page-corner corner-tl"
+          class="umo-page-corner corner-l"
           style="width: var(--umo-page-margin-left)"
         ></div>
 
@@ -46,7 +46,7 @@
           />
         </div>
         <div
-          class="umo-page-corner corner-tr"
+          class="umo-page-corner corner-r"
           style="width: var(--umo-page-margin-right)"
         ></div>
       </div>
@@ -62,7 +62,7 @@
       />
       <div class="umo-page-node-footer" contenteditable="false">
         <div
-          class="umo-page-corner corner-bl"
+          class="umo-page-corner corner-l"
           style="width: var(--umo-page-margin-left)"
         ></div>
         <div class="umo-page-node-footer-content">
@@ -74,7 +74,7 @@
           />
         </div>
         <div
-          class="umo-page-corner corner-br"
+          class="umo-page-corner corner-r"
           style="width: var(--umo-page-margin-right)"
         ></div>
       </div>
@@ -194,6 +194,24 @@ watch(
     justify-content: space-between;
   }
 
+  .umo-page-node-header {
+    .umo-page-corner::after {
+      height: min(calc(var(--umo-page-margin-top) - 1px), 1cm);
+      border: solid min(1px, var(--umo-page-margin-top)) var(--umo-border-color);
+      border-top: none;
+      bottom: 0;
+    }
+  }
+
+  .umo-page-node-footer {
+    .umo-page-corner::after {
+      height: min(calc(var(--umo-page-margin-bottom) - 1px), 1cm);
+      border: solid min(1px, var(--umo-page-margin-bottom)) var(--umo-border-color);
+      border-bottom: none;
+      top: 0;
+    }
+  }
+
   .umo-page-corner {
     box-sizing: border-box;
     position: relative;
@@ -207,36 +225,17 @@ watch(
       position: absolute;
       content: '';
       display: block;
-      height: 1cm;
-      width: 1cm;
-      border: solid 1px var(--umo-border-color);
     }
 
-    &.corner-tl::after {
-      border-top: none;
+    &.corner-l::after {
+      width: min(calc(var(--umo-page-margin-left) - 1px), 1cm);
       border-left: none;
-      bottom: 0;
       right: 0;
     }
 
-    &.corner-tr::after {
-      border-top: none;
+    &.corner-r::after {
+      width: min(calc(var(--umo-page-margin-right) - 1px), 1cm);
       border-right: none;
-      bottom: 0;
-      left: 0;
-    }
-
-    &.corner-bl::after {
-      border-bottom: none;
-      border-left: none;
-      top: 0;
-      right: 0;
-    }
-
-    &.corner-br::after {
-      border-bottom: none;
-      border-right: none;
-      top: 0;
       left: 0;
     }
   }
