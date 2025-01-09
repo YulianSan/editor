@@ -5,7 +5,7 @@
 <script setup lang="ts">
 const { container, options, editor, page, printing, exportPDF } = useStore()
 
-const iframeRef = $ref<HTMLIFrameElement | null>(null)
+const iframeRef = $ref(null) as HTMLIFrameElement | null
 let iframeCode = $ref('')
 const getStylesHtml = () => {
   return Array.from(document.querySelectorAll('link, style'))
@@ -21,7 +21,15 @@ const getContentHtml = () => {
   return Array.from(
     document.querySelectorAll(`${container} .umo-page-node-view`),
   )
-    .map((page) => page.outerHTML)
+    .map((page) => {
+      page = page.cloneNode(true) as Element
+
+      page.querySelectorAll('img[loading="lazy"]')?.forEach(img => {
+        img.setAttribute('loading', 'eager')
+      })
+
+      return page.outerHTML
+    })
     .join('')
 }
 
