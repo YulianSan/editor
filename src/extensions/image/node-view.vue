@@ -40,7 +40,7 @@
         :selected="selected"
         :rotatable="true"
         :boundary="false"
-        :disabled="!Boolean(node.attrs.draggable) || options.document?.readOnly"
+        :disabled="options.document?.readOnly"
         :angle="node.attrs.angle"
         :width="node.attrs.width ? Number(node.attrs.width) : null"
         :height="node.attrs.height ? Number(node.attrs.height) : null"
