@@ -31,6 +31,7 @@ import {
   PAGEBREAK,
   PARAGRAPH,
   TABLE,
+  TABLE_CELL,
   TABLE_ROW,
   TABLEHEADER,
   TEXT_BOX,
@@ -54,7 +55,7 @@ declare module '@tiptap/core' {
       /**
        * Splits one list item into two list items.
        */
-      autoPaging: (status: boolean | undefined) => ReturnType
+      autoPaging: (status?: boolean | undefined) => ReturnType
     }
   }
 }
@@ -80,8 +81,10 @@ const types = [
   TABLEHEADER,
   PAGE,
   HORIZONTALRULE,
-  BARCODE
+  BARCODE,
+  TABLE_CELL
 ]
+
 export default Node.create<PageOptions>({
   priority: 200,
   name: `${PAGE}`,

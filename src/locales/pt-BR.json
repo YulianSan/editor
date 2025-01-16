@@ -481,6 +481,7 @@
     "delete": "Excluir"
   },
   "bubbleMenu": {
+    "toFile": "Formação de Arquivo",
     "code": {
       "copy": {
         "text": "Copiar Código",

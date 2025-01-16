@@ -439,6 +439,7 @@
     "delete": "Delete"
   },
   "bubbleMenu": {
+    "toFile": "File formatting",
     "code": {
       "copy": {
         "text": "Copy Code",

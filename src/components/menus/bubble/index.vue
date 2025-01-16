@@ -3,6 +3,7 @@
     v-show="!blockMenu && !painter.enabled && !editor!.isEmpty"
     class="umo-editor-bubble-menu"
     :class="{ assistant: assistantBox }"
+    :shouldShow="shouldShowBubbleMenu"
     :editor="editor!"
     :tippy-options="tippyOpitons"
   >
@@ -18,11 +19,20 @@
 </template>
 
 <script setup lang="ts">
+import type { Editor } from '@tiptap/core';
+import type { EditorState } from '@tiptap/pm/state';
 import { BubbleMenu } from '@tiptap/vue-3'
 import type { Instance } from 'tippy.js'
 
 const { options, editor, painter, blockMenu, assistantBox, commentBox } =
   useStore()
+
+const shouldShowBubbleMenu = (props: { editor: Editor, state: EditorState }) => {
+  const { selection } = props.state
+  const { empty } = selection
+
+  return props.editor.isEditable && !empty;
+}
 
 // 气泡菜单
 let tippyInstance = $ref<Instance | null>(null)

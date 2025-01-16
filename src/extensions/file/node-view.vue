@@ -98,9 +98,9 @@ onMounted(async () => {
     options.value?.onFileUpload
   ) {
     try {
-      const { id, url } = await options.value.onFileUpload(node.attrs.file)
+      const { url } = await options.value.onFileUpload(node.attrs.file)
       if (containerRef.value) {
-        updateAttributes({ id, url, file: null, uploaded: true })
+        updateAttributes({ url, file: null, uploaded: true })
       }
     } catch (e) {
       useMessage('error', (e as Error).message)

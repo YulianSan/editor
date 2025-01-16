@@ -527,7 +527,7 @@ function filterAndCopyHtmlToIframe(iframe: any, excludedTags: string[]) {
 
 //------------------------------util----------------------------------------------
 export function getId() {
-  return Math.random().toString(36).substring(2, 10)
+  return `umo-id-${Math.random().toString(36).substring(2, 10)}`
 }
 // @ts-ignore
 export const findParentDomRefOfType = (nodeType, domAtPos) => (selection) => {

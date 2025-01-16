@@ -8,70 +8,27 @@
     </div>
     <div class="umo-toc-content umo-scrollbar">
       <div
-        v-if="tableOfContents.length === 0"
+        v-if="!content"
         class="umo-toc-empty"
         v-text="t('toc.empty')"
       ></div>
-      <div
-        v-for="item in tableOfContents"
-        v-else
-        :key="item.id"
-        class="umo-toc-item"
-        :class="{
-          active: item.isActive,
-          ['level-' + item.level]: true,
-        }"
-        :data-heading="'H' + (item.level ?? item.originalLevel)"
-        @click="headingClick(item as unknown as TableOfContentItem)"
-      >
-        <div class="umo-toc-text">
-          {{ item.title ?? item.textContent }}
-        </div>
-      </div>
+      <container-toc-submenu :content="content" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { TextSelection } from '@tiptap/pm/state'
+const { editor } = useStore()
 
-import type { TableOfContentItem } from '@/composables/store'
-
-const { container, editor, tableOfContents } = useStore()
+const content = $computed(() => {
+  console.log(editor.value.state)
+  return editor.value.state.doc.content.content
+})
 
 defineEmits(['close'])
-
-const headingClick = (heading: TableOfContentItem) => {
-  if (!editor.value) {
-    return
-  }
-  const activeHeading = tableOfContents.value.find(
-    (item: any) => 'isActive' in item && item.isActive,
-  )
-  if (activeHeading && 'isActive' in activeHeading) {
-    activeHeading.isActive = false
-  }
-  if ('isActive' in heading) {
-    heading.isActive = true
-  }
-  const element = editor.value.view.dom.querySelector(
-    `[data-toc-id="${heading.id}"`,
-  )
-  const pageContainer = document.querySelector(
-    `${container} .umo-zoomable-container`,
-  )
-  pageContainer?.scrollTo({
-    top: (element as HTMLElement)?.offsetTop ?? 0 + 10,
-  })
-  const pos = editor.value.view.posAtDOM(element as Node, 0)
-  const { tr } = editor.value.view.state
-  tr.setSelection(new TextSelection(tr.doc.resolve(pos)))
-  editor.value.view.dispatch(tr)
-  editor.value.view.focus()
-}
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .umo-toc-container {
   background-color: var(--umo-color-white);
   border-right: solid 1px var(--umo-border-color);
@@ -118,9 +75,8 @@ const headingClick = (heading: TableOfContentItem) => {
       align-items: center;
       position: relative;
       margin: 2px 0;
-      &::before {
+      .umo-icon {
         position: absolute;
-        content: attr(data-heading);
         color: var(--umo-text-color-light);
         margin-right: 8px;
         border-radius: 2px;
@@ -128,24 +84,19 @@ const headingClick = (heading: TableOfContentItem) => {
         font-size: 8px;
         padding: 5px 4px;
         left: 7px;
-        top: 50%;
+        top: 1.8em;
         transform: translateY(-50%);
       }
-      &:hover {
+      &:not(:has(.umo-toc-item:hover)):hover {
         cursor: pointer;
         background: var(--umo-content-node-selected-background);
         color: var(--umo-primary-color);
-        &::before {
+        .umo-icon {
           color: var(--umo-primary-color);
           border-color: var(--umo-primary-color);
         }
-      }
-      &.active {
-        background: var(--umo-button-hover-background);
-        color: var(--umo-primary-color);
-        &::before {
-          color: var(--umo-primary-color);
-          border-color: var(--umo-primary-color);
+        .umo-toc-item {
+          color: var(--umo-text-color) !important;
         }
       }
       &.level-1 {
