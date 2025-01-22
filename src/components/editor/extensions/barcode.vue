@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import JsBarcode from 'jsbarcode'
 import Drager from 'es-drager'
 
-const { options } = useStore()
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
 
-const barcode = ref(null)
+const { options } = useStore()
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
+
+const barcode = $ref<HTMLElement | null>(null)
 let selected = $ref(false)
 
 const settings = computed(() => {
@@ -23,14 +25,14 @@ const onRotate = ({ angle }: { angle: number }) => {
 
 const renderBarcode = () => {
   JsBarcode(
-    barcode.value,
+    barcode,
     settings.value.content,
     settings.value,
   )
 }
 
 const propsBarCode = computed(() => {
-  const { width = 100, height = 30 } = barcode.value?.getBoundingClientRect?.() ?? {}
+  const { width = 100, height = 30 } = barcode?.getBoundingClientRect?.() ?? {}
 
   return { width, height }
 })

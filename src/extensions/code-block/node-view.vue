@@ -56,7 +56,7 @@ import 'prism-code-editor/prism/languages/yaml'
 import 'prism-code-editor/prism/languages/regex'
 import 'prism-code-editor/layout.css'
 
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import { createEditor, type PrismEditor } from 'prism-code-editor'
 import { defaultCommands, editHistory } from 'prism-code-editor/commands'
 import { cursorPosition } from 'prism-code-editor/cursor'
@@ -65,7 +65,9 @@ import { highlightBracketPairs } from 'prism-code-editor/highlight-brackets'
 import { matchBrackets } from 'prism-code-editor/match-brackets'
 import { matchTags } from 'prism-code-editor/match-tags'
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 
 const { options } = useStore()
 
@@ -114,7 +116,7 @@ onBeforeUnmount(() => {
 
 watch(
   () => options.value.document?.readOnly,
-  (val: boolean) => {
+  (val?: boolean) => {
     codeEditor?.setOptions({
       readOnly: val,
     })

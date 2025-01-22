@@ -34,7 +34,7 @@ loader.config({
     },
   },
 })
-const config = {
+const config: Editor.IStandaloneEditorConstructionOptions = {
   fontSize: 14,
   formatOnType: true,
   formatOnPaste: true,
@@ -44,7 +44,7 @@ const config = {
   scrollbar: {
     verticalScrollbarSize: 5,
     horizontalScrollbarSize: 5,
-    scrollbarVisibility: 'auto',
+    vertical: 'auto',
     horizontal: 'hidden',
   },
 }

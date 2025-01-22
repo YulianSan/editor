@@ -223,7 +223,7 @@ import JsBarcode from 'jsbarcode'
 import { BARCODE } from '@/extensions/page/node-names';
 
 const { attrs } = defineProps<{
-  attrs: any
+  attrs?: any
 }>()
 
 const { popupVisible, togglePopup } = usePopup()

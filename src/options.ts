@@ -26,7 +26,7 @@ const defaultOptions: UmoEditorOptions = {
   height: '100%',
   dicts: {
     fonts: [
-      { label: { en_US: 'Default Font', zh_CN: '默认字体', pt_BR: 'Fonte padrão' }, value: null },
+      { label: { en_US: 'Default Font', zh_CN: '默认字体', pt_BR: 'Fonte padrão' }, value: undefined },
       { label: { en_US: 'Songti', zh_CN: '宋体', pt_BR: 'Songti' }, value: 'SimSun' },
       { label: { en_US: 'Heiti', zh_CN: '黑体', pt_BR: 'Heiti' }, value: 'SimHei' },
       { label: { en_US: 'Kaiti', zh_CN: '楷体', pt_BR: 'Kaiti' }, value: 'KaiTi' },
@@ -463,7 +463,7 @@ const objectSchema = new ObjectSchema({
             throw new Error('Key "dicts": Key "fonts" must be a array.')
           }
           for (const item of value) {
-            if (!item.label || (!item.value && item.value !== null)) {
+            if (!item.label || (!item.value && item.value !== undefined)) {
               throw new Error(
                 'Key "dicts": Key "fonts" must be a array of objects with "label" and "value" properties.',
               )

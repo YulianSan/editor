@@ -155,7 +155,7 @@ const defaultToolbarMenus = [
 let toolbarMenus = defaultToolbarMenus
 if (options.value.toolbar?.menus) {
   toolbarMenus = options.value.toolbar?.menus.map(
-    (item: any) => defaultToolbarMenus.find((menu) => menu.value === item),
+    (item: any) => defaultToolbarMenus.find((menu) => menu.value === item)!,
   )
 }
 let currentMenu = $ref(toolbarMenus[0].value)
@@ -166,7 +166,7 @@ const menuChange = (menu: string) => {
 // 监听如果当前编辑元素为table则切换到table菜单
 watch(
   () => editor.value?.isActive('table'),
-  (val: boolean, oldVal: boolean) => {
+  (val?: boolean, oldVal?: boolean) => {
     if (val) {
       currentMenu = 'table'
     } else if (!val && oldVal) {

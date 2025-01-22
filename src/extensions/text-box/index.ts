@@ -2,6 +2,7 @@ import { mergeAttributes, Node } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 
 import NodeView from './node-view.vue'
+
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     setTextBox: {

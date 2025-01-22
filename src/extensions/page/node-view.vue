@@ -82,17 +82,22 @@
   </node-view-wrapper>
 </template>
 <script setup lang="ts">
-import { NodeViewContent, nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import type { WatermarkText } from 'tdesign-vue-next'
 
 import type { WatermarkOption } from '@/types'
 
+interface LocalNodeViewProps extends NodeViewProps { }
+
 const { page, exportImage } = useStore()
-const { editor, node } = defineProps(nodeViewProps)
+const { editor, node } = defineProps<LocalNodeViewProps>()
 const containerRef = ref(null)
 
 const pageSize = $computed(() => {
+  if (!page.value.size) return { width: 0, height: 0 };
+
   const { width, height } = page.value.size
+
   return {
     width: page.value.orientation === 'portrait' ? width : height,
     height: page.value.orientation === 'portrait' ? height : width,

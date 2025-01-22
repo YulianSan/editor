@@ -90,10 +90,12 @@ const options = $ref({
   openSmooth,
   scale: 2,
 })
-let signature = $ref(null)
-const signatureRef = $ref(null)
+let signature = $ref<SmoothSignature | null>(null)
+const signatureRef = $ref<HTMLCanvasElement | null>(null)
 
 const resetOptions = () => {
+  if (!signature) return
+
   signature.width = 600
   signature.height = 200
   signature.minWidth = 4
@@ -104,19 +106,25 @@ const resetOptions = () => {
 }
 
 const changeLineColor = (color: string) => {
+  if (!signature) return
+
   signature.color = color
 }
 const changeLineWidth = ({ value }: { value: number }) => {
-  signature.minWidth = value
-  signature.maxWidth = value
+  signature!.minWidth = value
+  signature!.maxWidth = value
 }
 const changeSmooth = () => {
+  if (!signature) return
+
   openSmooth = !openSmooth
   signature.openSmooth = openSmooth
   signature.maxWidth = openSmooth ? signature.minWidth * 2 : signature.minWidth
 }
 
 const setSignature = () => {
+  if (!signature) return
+
   try {
     const image = signature.getPNG()
     editor.value
@@ -133,6 +141,7 @@ const setSignature = () => {
       .run()
     dialogVisible = false
   } catch {
+    /** @ts-ignore */
     useMessage('error', t('tools.signature.notEmpty'))
   }
 }
@@ -143,7 +152,9 @@ watch(
     if (val) {
       if (!signature) {
         await nextTick()
-        signature = new SmoothSignature(signatureRef, options)
+        if (signatureRef) {
+          signature = new SmoothSignature(signatureRef, options)
+        }
       }
     } else {
       signature?.clear()

@@ -33,8 +33,8 @@
             }"
             @change="selectPageSize as any"
           >
-            <template #valueDisplay>
-              {{ l(pageOptions.size?.label) }}
+            <template #valueDisplay v-if="pageOptions.size?.label">
+              {{ l(pageOptions.size.label) }}
             </template>
             <t-option
               v-for="(item, index) in options.dicts?.pageSizes"
@@ -95,7 +95,7 @@
               <div
                 class="item"
                 :class="{ active: !pageOptions.margin?.layout }"
-                @click="selectPageMargin(options.page?.defaultMargin)"
+                @click="selectPageMargin(options.page.defaultMargin!)"
                 v-text="t('pageOptions.margin.default')"
               ></div>
               <div
@@ -227,6 +227,7 @@
 </template>
 
 <script setup lang="ts">
+import type { PageOption } from '@/types';
 import type { InputNumberValue } from 'tdesign-vue-next'
 
 const props = defineProps({
@@ -239,7 +240,7 @@ const emits = defineEmits(['close'])
 
 const { container, options, page } = useStore()
 
-let pageOptions = $ref({})
+let pageOptions = $ref<PageOption>({})
 watch(
   () => props.visible,
   (visible: boolean) => {
@@ -265,6 +266,7 @@ const inputPageSize = (value: number, field: 'width' | 'height') => {
     Reflect.set(pageOptions.size, field, 2)
     return
   }
+  /** @ts-ignore */
   pageOptions.size.label = t('pageOptions.size.custom')
 }
 

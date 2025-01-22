@@ -24,18 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import type { ReactiveVariable } from '@vue-macros/reactivity-transform/macros'
 
 import { mediaPlayer } from '@/utils/player'
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 const { options } = useStore()
 
 const containerRef = ref<HTMLElement | null>(null)
 const audiorRef = $ref<ReactiveVariable<HTMLAudioElement> | null>(null)
 let player = $ref<Plyr | null>(null)
-let selected = $ref(false)
 
 const nodeStyle = $computed(() => {
   const { nodeAlign, margin } = node.attrs
@@ -51,7 +52,8 @@ const nodeStyle = $computed(() => {
 })
 
 onMounted(async () => {
-  player = mediaPlayer(audiorRef)
+  if (audiorRef) player = mediaPlayer(audiorRef)
+
   if (node.attrs.uploaded === false && node.attrs.file) {
     try {
       const { url } =
@@ -69,10 +71,6 @@ onBeforeUnmount(() => {
   if (player) {
     player?.destroy()
   }
-})
-
-onClickOutside(containerRef, () => {
-  selected = false
 })
 </script>
 

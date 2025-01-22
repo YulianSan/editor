@@ -22,7 +22,7 @@
             menu-type="select"
             :select-value="config.ecl"
             @menu-click="
-              (value: string) => {
+              (value: QRCode.Options['ecl']) => {
                 config.ecl = value
               }
             "
@@ -131,12 +131,13 @@ const menuClick = () => {
 }
 
 const levels = [
+  /** @ts-ignore */
   { label: t('tools.qrcode.levelL'), value: 'L' },
   { label: t('tools.qrcode.levelM'), value: 'M' },
   { label: t('tools.qrcode.levelQ'), value: 'Q' },
   { label: t('tools.qrcode.levelH'), value: 'H' },
 ]
-const defaultConfig = {
+const defaultConfig: QRCode.Options = {
   ecl: 'M',
   padding: 1,
   width: 256,

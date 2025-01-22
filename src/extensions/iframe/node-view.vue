@@ -28,12 +28,15 @@
 </template>
 
 <script setup lang="ts">
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import Drager from 'es-drager'
+import type { ComponentPublicInstance } from 'vue';
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 const { editor } = useStore()
-const containerRef = ref(null)
+const containerRef = ref<ComponentPublicInstance | null>(null)
 let selected = $ref(false)
 let maxWidth = $ref(0)
 

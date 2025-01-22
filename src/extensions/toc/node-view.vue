@@ -28,9 +28,11 @@
 
 <script setup lang="ts">
 import { TextSelection } from '@tiptap/pm/state'
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 
-const { node } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node } = defineProps<LocalNodeViewProps>()
 
 const { editor, tableOfContents } = useStore()
 

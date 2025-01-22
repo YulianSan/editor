@@ -41,8 +41,8 @@ const updateMenuPostion = () => {
   scrollTop = offsetTop
 }
 onMounted(() => {
-  if (editor) {
-    editor.value?.on('selectionUpdate', updateMenuPostion)
+  if (editor.value) {
+    editor.value.on('selectionUpdate', updateMenuPostion)
     editor.value.on('focus', updateMenuPostion)
   } else {
     visible = false

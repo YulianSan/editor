@@ -42,8 +42,8 @@
         :boundary="false"
         :disabled="options.document?.readOnly"
         :angle="node.attrs.angle"
-        :width="node.attrs.width ? Number(node.attrs.width) : null"
-        :height="node.attrs.height ? Number(node.attrs.height) : null"
+        :width="node.attrs.width ? Number(node.attrs?.width) : undefined"
+        :height="node.attrs.height ? Number(node.attrs?.height) : undefined"
         :left="Number(node.attrs.left)"
         :top="Number(node.attrs.top)"
         :min-width="14"
@@ -57,7 +57,6 @@
         @resize-start="onResizeStart"
         @resize-end="onResizeEnd"
         @drag="onDrag"
-        @click="selected = true"
       >
         <img
           ref="imageRef"
@@ -85,20 +84,24 @@
 </template>
 
 <script setup lang="ts">
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import Drager from 'es-drager'
 import { base64ToFile } from 'file64'
 
 import { shortId } from '@/utils/short-id'
 import { validImage } from '.';
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 const { options, editor, imageViewer } = useStore()
 const { isLoading, error } = useImage({ src: node.attrs.src })
 
-const containerRef = ref(null)
+import type { ComponentPublicInstance } from 'vue';
+
+const containerRef = ref<ComponentPublicInstance | null>(null)
 const imageRef = $ref<HTMLImageElement | null>(null)
-let selected = $ref(false)
+let selected = $computed(() => editor.value?.isActive('image') && editor.value?.getAttributes('image').id === node.attrs.id)
 let maxWidth = $ref(0)
 let maxHeight = $ref(200)
 
@@ -164,12 +167,14 @@ const onLoad = async () => {
   if ([null, 'auto', 0].includes(node.attrs.width)) {
     await nextTick()
     const { width } = imageRef?.getBoundingClientRect() ?? {}
+    if (typeof width !== 'number') return
     updateAttributes({ width: width.toFixed(2) })
   }
 
   if ([null, 'auto', 0].includes(node.attrs.height)) {
     await nextTick()
     const { height } = imageRef?.getBoundingClientRect() ?? {}
+    if (typeof height !== 'number') return
     updateAttributes({ height: height.toFixed(2) })
   }
 }
@@ -193,10 +198,6 @@ const onResizeEnd = () => {
 const onDrag = ({ left, top }: { left: number; top: number }) => {
   updateAttributes({ left, top })
 }
-
-onClickOutside(containerRef, () => {
-  selected = false
-})
 
 const openImageViewer = () => {
   imageViewer.value.visible = true

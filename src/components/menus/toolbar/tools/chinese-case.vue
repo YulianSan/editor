@@ -95,7 +95,9 @@ const options: {
 
 let selectionText = $ref('')
 onMounted(() => {
-  editor.value.on('selectionUpdate', () => {
+  editor.value?.on('selectionUpdate', () => {
+    if (!editor.value) return;
+
     const text = getSelectionText(editor.value)
     selectionText = text
   })

@@ -18,7 +18,7 @@ const getLocale = (lang: SupportedLocale) => {
   return {}
 }
 
-watch(() => options.value.locale, (locale: string) => {
+watch(() => options.value.locale, (locale: SupportedLocale) => {
   i18n.global.locale.value = locale
 })
 

@@ -22,7 +22,7 @@
 import type { Editor } from '@tiptap/core';
 import type { EditorState } from '@tiptap/pm/state';
 import { BubbleMenu } from '@tiptap/vue-3'
-import type { Instance } from 'tippy.js'
+import type { Instance, Props } from 'tippy.js'
 
 const { options, editor, painter, blockMenu, assistantBox, commentBox } =
   useStore()
@@ -36,7 +36,7 @@ const shouldShowBubbleMenu = (props: { editor: Editor, state: EditorState }) => 
 
 // 气泡菜单
 let tippyInstance = $ref<Instance | null>(null)
-const tippyOpitons = $ref<Partial<Instance>>({
+const tippyOpitons = $ref<Partial<Props>>({
   appendTo: 'parent',
   maxWidth: 580,
   zIndex: 9*(10**10),

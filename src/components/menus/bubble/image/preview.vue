@@ -11,6 +11,8 @@ import { getSelectionNode } from '@/extensions/selection'
 const { editor, imageViewer } = useStore()
 
 const openImageViewer = () => {
+  if (!editor.value)  return
+
   const image = getSelectionNode(editor.value)
   imageViewer.value.current = image.attrs.id
   imageViewer.value.visible = true

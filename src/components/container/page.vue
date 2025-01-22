@@ -115,7 +115,7 @@ watch(
       `${container} .umo-page-content img:not(.umo-icon)`,
     )
     Array.from(images).forEach((image, index) => {
-      const src = image.getAttribute('src')
+      const src = image.getAttribute('src')!
       const nodeId = image.getAttribute('data-id')
       previewImages.push(src)
       if (nodeId === imageViewer.value.current) {

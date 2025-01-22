@@ -36,12 +36,12 @@ const getContentHtml = () => {
 const defaultLineHeight = $computed(
   () =>
     options.value.dicts?.lineHeights.find(
-      (item: { default: any }) => item.default,
+      (item: { default?: boolean }) => item.default,
     )?.value,
 )
 
 const getIframeCode = () => {
-  const { readOnly } = options.value.document
+  const readOnly = options.value.document?.readOnly ?? false
   const { orientation, size, background } = page.value
 
   /* eslint-disable */
@@ -120,7 +120,7 @@ const printPage = () => {
 
 watch(
   () => [printing.value, exportPDF.value],
-  (value: [boolean, boolean]) => {
+  (value: boolean[]) => {
     if (!value[0] && !value[1]) {
       return
     }

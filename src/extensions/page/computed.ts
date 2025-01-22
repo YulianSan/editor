@@ -663,7 +663,7 @@ export class PageComputedContext {
             (
               !dom?.classList.contains('p-empty')
               && !dom?.querySelector('br.ProseMirror-trailingBreak')
-            ) || !options.value.document.readOnly
+            ) || !options.value.document?.readOnly
           )
 
         splitContex.validNode = !!(node.type.name != PAGE && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty))

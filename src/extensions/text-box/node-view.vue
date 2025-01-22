@@ -19,7 +19,6 @@
       <drager
         :selected="selected"
         :disabled="disabled || options?.document?.readOnly"
-        :draggable="!options?.document?.readOnly"
         :rotatable="true"
         :boundary="false"
         :angle="node.attrs.angle"
@@ -44,10 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { NodeViewContent, nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import Drager from 'es-drager'
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 
 const { options } = useStore()
 

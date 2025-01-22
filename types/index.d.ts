@@ -109,7 +109,8 @@ export interface DocumentOptions {
   autoSave?: AutoSaveOptions
 }
 
-export type LocaleLabel = string | Record<'en_US' | 'zh_CN' | 'pt_BR', string>
+export type KeyLocaleLabel = 'en_US' | 'zh_CN' | 'pt_BR'
+export type LocaleLabel = string | Record<KeyLocaleLabel, string>
 
 export interface PageSize {
   label: LocaleLabel
@@ -120,7 +121,7 @@ export interface PageSize {
 
 export interface Font {
   label: LocaleLabel
-  value: string | null
+  value: string | undefined
 }
 
 export interface LineHeight {

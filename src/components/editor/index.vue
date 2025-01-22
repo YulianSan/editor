@@ -84,7 +84,7 @@ const editorInstance: Editor = new Editor({
       types: options.value.page.nodesComputedOption?.types ?? [],
       slots: useSlots(),
     }),
-    ...extensions(options.value, container, tableOfContents.value),
+    ...extensions(options.value, container, tableOfContents),
     ...(options.value.extensions as Extension[]),
   ],
   onCreate({ editor }) {

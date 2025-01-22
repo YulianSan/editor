@@ -104,7 +104,7 @@ const allFonts = computed(() => {
     return values.map(
       (item) =>
         options.value.dicts?.fonts.find(
-          ({ value }: { value: string }) => value === item,
+          ({ value }: { value: string | undefined }) => value === item,
         ) ?? {
           label: item,
           item,

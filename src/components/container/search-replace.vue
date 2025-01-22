@@ -180,6 +180,8 @@ const replaceAll = () => editor.value?.commands.replaceAll()
 watch(
   () => searchReplace.value,
   (visible: boolean) => {
+    if (!editor.value) return
+
     searchText = visible ? getSelectionText(editor.value) : ''
   },
 )

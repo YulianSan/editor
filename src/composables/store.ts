@@ -1,21 +1,22 @@
 import type { Mark } from '@tiptap/pm/model'
 import type { Editor } from '@tiptap/vue-3'
 import type { TableOfContentDataItem } from '@tiptap-pro/extension-table-of-contents'
-import { isRecord } from '@tool-belt/type-predicates'
 
 import { changeComputedHtml } from '@/extensions/page/core'
 import { defaultOptions, objectSchema } from '@/options'
 import type { PageOption, UmoEditorOptions } from '@/types'
 import { shortId } from '@/utils/short-id'
+import { ref } from 'vue'
 
 export type TableOfContentItem = TableOfContentDataItem & { title: string }
 
 export const useStore = createGlobalState(() => {
   const toolbarKey = ref<string>(shortId())
   const options = ref<UmoEditorOptions>(defaultOptions)
-  const defaultOptionsCustom = ref<PageOption>()
+  const defaultOptionsCustom = ref<Partial<UmoEditorOptions> | undefined>()
   const page = ref<PageOption>(defaultOptions.page)
-  const editor = ref<Editor>()
+  const editor: Ref<Editor | undefined> = ref()
+
   const painter = ref<{
     enabled: boolean
     once: boolean
@@ -43,26 +44,27 @@ export const useStore = createGlobalState(() => {
   const hidePageFooter = ref(true)
   const editorDestroyed = ref(false)
 
-  const setOptions = (value: unknown, isDefault = false) => {
-    if (isDefault) {
-      defaultOptionsCustom.value = value
-    }
+  type TKeyUmoEditorOptions = keyof UmoEditorOptions
 
-    const opts =
-      isRecord(value) && Object.keys(value).includes('value')
-        ? value.value
-        : value
+  const setOptions = (value: Partial<UmoEditorOptions> | Ref<Partial<UmoEditorOptions>>, isDefault = false) => {
+    const opts = isRef(value) ? value.value : value
+
+    if (isDefault) {
+      defaultOptionsCustom.value = opts
+    }
 
     options.value = objectSchema.merge(
       options.value,
-      Object.keys(opts).reduce<Record<string, unknown>>(
-        (acc: Record<string, unknown>, key: string) => {
+      Object.keys(opts).reduce<Record<string, TKeyUmoEditorOptions>>(
+        (acc: Record<TKeyUmoEditorOptions, any>, _key: string) => {
+          const key = _key as TKeyUmoEditorOptions
+
           if (opts[key] !== undefined) {
             acc[key] = opts[key]
           }
           return acc
         },
-        {},
+        {} as  Record<TKeyUmoEditorOptions, any>,
       ),
     )
     const $locale = useState('locale')
@@ -93,7 +95,7 @@ export const useStore = createGlobalState(() => {
   const updatePage = ({ size, defaultBackground, defaultMargin, defaultOrientation, watermark, }: PageOption) => {
     page.value = {
       size: size ?? options.value.dicts?.pageSizes.find(
-        (item: { default: boolean }) => item.default,
+        (item: { default?: boolean }) => item?.default ?? false,
       ),
       margin: defaultMargin,
       background: defaultBackground,
@@ -148,7 +150,7 @@ export const useStore = createGlobalState(() => {
 
   watch(
     () => options.value.document?.readOnly,
-    (val: boolean) => {
+    (val?: boolean) => {
       editor.value?.setEditable(!val)
       toolbarKey.value = shortId()
     },

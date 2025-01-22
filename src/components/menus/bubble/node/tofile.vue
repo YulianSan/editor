@@ -11,7 +11,9 @@ import { getSelectionNode } from '@/extensions/selection'
 const { editor } = useStore()
 
 const nodeTofile = () => {
-  const { attrs } = getSelectionNode(editor.value)
+  if (!editor.value)  return
+
+  const { attrs } = getSelectionNode(editor?.value)
   if (!attrs) {
     return false
   }

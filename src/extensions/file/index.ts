@@ -20,7 +20,10 @@ const mimeTypes: any = {
 }
 
 const getAccept = (type: string) => {
+  if (!options.value.file) return '';
+
   const accept = options.value.file.allowedMimeTypes
+
   if (type === 'file' && accept.length === 0) {
     return ''
   }
@@ -46,7 +49,7 @@ declare module '@tiptap/core' {
       insertFile: (options: any) => ReturnType
     }
     selectFiles: {
-      selectFiles: (options: any) => ReturnType
+      selectFiles: (options: string, autoType?: boolean) => ReturnType
     }
   }
 }
@@ -117,10 +120,12 @@ export default Node.create({
         ({ file, autoType, pos }) =>
         ({ editor, commands }) => {
           const { type, name, size } = file
-          const { maxSize } = options.value.file
+          const maxSize = options.value.file?.maxSize ?? 0
+
           if (maxSize !== 0 && size > maxSize) {
             useMessage(
               'error',
+              /** @ts-ignore */
               t('file.limit', {
                 filename: file.name,
                 size: maxSize / 1024 / 1024,
@@ -203,7 +208,7 @@ export default Node.create({
           for (const node of page.content.content) {
             if (['image', 'video', 'audio', 'file'].includes(node.attrs.type)) {
               const { id, src, url } = node.attrs
-              options.value.onFileDelete(id, src || url)
+              options.value?.onFileDelete?.(id, src || url)
             }
           }
         }

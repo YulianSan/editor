@@ -94,6 +94,8 @@
 </template>
 
 <script setup lang="ts">
+import type { SelectOption, SelectValue } from 'tdesign-vue-next';
+
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -101,7 +103,11 @@ const props = defineProps({
   },
 })
 
-const emits = defineEmits('countdown-change', 'exit-preivew', 'close')
+const emits = defineEmits([
+  'countdown-change',
+  'exit-preivew',
+  'close',
+])
 
 const { container } = useStore()
 
@@ -115,33 +121,34 @@ const popperOptions = {
     },
   ],
 }
-const selectValue = $ref(null)
-let hours = $ref(null)
-let minutes = $ref(null)
-let seconds = $ref(null)
+const selectValue = $ref<number | undefined>(undefined)
+let hours = $ref<number | undefined>(undefined)
+let minutes = $ref<number | undefined>(undefined)
+let seconds = $ref<number | undefined>(undefined)
 const whenEnd = $ref('showEndMessage')
 
 const options = [
+  // @ts-ignore
   { label: t('preview.countdown.1hour'), value: 60 },
   { label: t('preview.countdown.45minutes'), value: 45 },
   { label: t('preview.countdown.30minutes'), value: 30 },
   { label: t('preview.countdown.15minutes'), value: 15 },
   { label: t('preview.countdown.10minutes'), value: 10 },
   { label: t('preview.countdown.5minutes'), value: 5 },
-  { label: t('preview.countdown.custom'), value: null },
+  { label: t('preview.countdown.custom'), value: undefined },
 ]
 
-const countdownSelect = (value: number) => {
-  minutes = value
+const countdownSelect = (value: SelectValue<SelectOption>) => {
+  minutes = value as number | undefined
 }
 
 let countdownInfo = $ref('')
 let messageBox: ReturnType<typeof useMessage> = null
 let countdownInterval: ReturnType<typeof setInterval> | null = null
 const resetCountdown = () => {
-  hours = null
-  minutes = null
-  seconds = null
+  hours = undefined
+  minutes = undefined
+  seconds = undefined
   countdownInfo = ''
 }
 const startCountdown = async () => {

@@ -103,12 +103,16 @@ watch(
 
 // 创建或更新 Mermaid
 const setMermaid = () => {
-  if (mermaidCode === '') {
+  if (!mermaidCode) {
+    /** @ts-ignore */
     useMessage('error', t('tools.mermaid.notEmpty'))
     return
   }
+
   if (!props.content || (props.content && props.content !== mermaidCode)) {
-    const svg = mermaidRef.querySelector('svg')
+    const svg = mermaidRef!.querySelector('svg')
+    if (!svg) return
+
     const { width, height } = svg.getBoundingClientRect()
     const name = `mermaid-${shortId()}.svg`
     const { size } = new Blob([svg.outerHTML], {

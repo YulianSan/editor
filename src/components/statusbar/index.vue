@@ -332,7 +332,7 @@
 </template>
 
 <script setup lang="ts">
-import type { UseFullscreenReturn } from '@vueuse/core'
+import type { MaybeElementRef, UseFullscreenReturn } from '@vueuse/core'
 import type { DropdownOption } from 'tdesign-vue-next'
 
 import type { SupportedLocale } from '@/types'
@@ -373,9 +373,19 @@ const selectionCharacters = computed(() => {
 })
 
 // 页面全屏
-let fullscreen: UseFullscreenReturn = $ref(null)
+let fullscreen = $ref<UseFullscreenReturn | null>(null)
+
 onMounted(() => {
-  fullscreen = useFullscreen(document.querySelector(container))
+  const fullscreenWtihReactivity = useFullscreen(document.querySelector(container) as MaybeElementRef)
+
+  fullscreen = {
+    isSupported: unref(fullscreenWtihReactivity.isSupported),
+    isFullscreen: unref(fullscreenWtihReactivity.isFullscreen),
+    enter: fullscreenWtihReactivity.enter,
+    exit: fullscreenWtihReactivity.exit,
+    toggle: fullscreenWtihReactivity.toggle,
+  }
+
   useHotkeys('f11, command+f11', fullscreen.toggle)
 })
 
@@ -393,7 +403,7 @@ const togglePreview = () => {
   }
 }
 const exitPreview = () => {
-  if (page.value.preview.enabled) {
+  if (page.value.preview?.enabled) {
     page.value.preview ??= {}
     page.value.preview.enabled = false
   }
@@ -411,19 +421,19 @@ const countdownChange = (value: string) => {
 
 watch(
   () => page.value.preview?.enabled,
-  (enabled: boolean) => {
+  (enabled?: boolean) => {
     if (enabled) {
-      void fullscreen.enter()
+      void fullscreen?.enter()
       autoWidth(false, 10)
     } else {
-      void fullscreen.exit()
+      void fullscreen?.exit()
       zoomReset()
     }
   },
 )
 watch(
   () => fullscreen?.isFullscreen,
-  (isFullscreen: boolean) => {
+  (isFullscreen?: boolean) => {
     if (!isFullscreen) {
       exitPreview()
     }

@@ -2,7 +2,7 @@
 import { Node } from '@tiptap/pm/model';
 
 const props = defineProps<{
-  content: Node[]
+  content: readonly Node[]
 }>()
 
 const validNodes = $computed(() => {

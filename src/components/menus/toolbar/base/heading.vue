@@ -77,7 +77,7 @@ const { container, editor } = useStore()
 const $toolbar = useState('toolbar')
 const popupContentRef = ref(null)
 
-const options = $ref([
+const options = $ref<{ label: string; desc: string; value: string, binds?: any }[]>([
   { label: 'base.heading.paragraph', desc: 'text', value: 'paragraph' },
 ])
 for (const i of Array.from({ length: 6 }).keys()) {
@@ -86,7 +86,7 @@ for (const i of Array.from({ length: 6 }).keys()) {
     label: `base.heading.text`,
     binds: { level },
     desc: `h${level}`,
-    value: level,
+    value: level.toString(),
   })
 }
 

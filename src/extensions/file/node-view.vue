@@ -66,12 +66,14 @@
 </template>
 
 <script setup lang="ts">
-import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import prettyBytes from 'pretty-bytes'
 
 import { getFileIcon } from '@/utils/file'
 
-const { node, updateAttributes } = defineProps(nodeViewProps)
+interface LocalNodeViewProps extends NodeViewProps { }
+
+const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
 const { options, editor } = useStore()
 const containerRef = ref(null)
 let filePath = $ref('')
@@ -112,7 +114,7 @@ const supportPreviewTypes = ['image', 'video', 'audio']
 
 const togglePreview = () => {
   const { attrs } = node
-  editor.value.commands.insertContent({
+  editor.value?.commands.insertContent({
     type: attrs.previewType,
     attrs: {
       ...attrs,

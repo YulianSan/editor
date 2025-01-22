@@ -12,7 +12,7 @@
         class="umo-toc-empty"
         v-text="t('toc.empty')"
       ></div>
-      <container-toc-submenu :content="content" />
+      <container-toc-submenu :content="content!" />
     </div>
   </div>
 </template>
@@ -21,8 +21,7 @@
 const { editor } = useStore()
 
 const content = $computed(() => {
-  console.log(editor.value.state)
-  return editor.value.state.doc.content.content
+  return editor.value?.state.doc.content.content
 })
 
 defineEmits(['close'])

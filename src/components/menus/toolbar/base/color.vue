@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ReactiveVariable } from '@vue-macros/reactivity-transform/macros.js';
+
 const props = defineProps({
   text: {
     type: String,
@@ -42,7 +44,7 @@ const { popupVisible, togglePopup } = usePopup()
 const { editor } = useStore()
 
 let currentColor = $ref<string | undefined>()
-const colorChange = (color: string) => {
+const colorChange = (color: string | undefined) => {
   currentColor = color
   popupVisible.value = false
 
@@ -51,7 +53,7 @@ const colorChange = (color: string) => {
     return
   }
 
-  if (color === '') {
+  if (!color) {
     editor.value?.chain().focus().unsetColor().run()
   } else {
     editor.value?.chain().focus().setColor(color).run()

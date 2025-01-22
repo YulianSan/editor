@@ -18,6 +18,7 @@ const vuePlugins = {
     plugins: {
       vue: Vue(),
     },
+    betterDefine: true
   }),
   AutoImport: AutoImport({
     dirs: ['./src/composables'],

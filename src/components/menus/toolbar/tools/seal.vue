@@ -37,7 +37,7 @@ let dialogVisible = $ref(false)
 const { options, editor } = useStore()
 
 let sealImg = $ref<string | null>(null)
-let sealFile = $ref<File | null>(null)
+let sealFile = $ref<File | Blob | null>(null)
 let converting = $ref<string | null>(null)
 let file = $ref<File | null>(null)
 
@@ -87,6 +87,7 @@ const selectImage = () => {
 
 const setSeal = () => {
   if (!sealImg) {
+    /** @ts-ignore */
     useMessage('error', t('tools.seal.notEmpty'))
     return
   }

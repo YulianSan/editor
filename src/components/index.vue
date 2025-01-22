@@ -18,7 +18,7 @@
       :style="{ height: options.height }"
     >
       <header class="umo-toolbar">
-        <div class="umo-editor-title">
+        <div class="umo-editor-title" v-if="!!options.document">
           <t-input
             v-model="options.document.title"
             :placeholder="t('document.title')"
@@ -86,8 +86,8 @@ const { toBlob, toJpeg, toPng } = domToImage
 
 defineOptions({ name: 'UmoEditor' })
 
-// Props and Emits
 const props = defineProps(propsOptions)
+
 const emits = defineEmits([
   'beforeCreate',
   'created',
@@ -260,35 +260,35 @@ watch(
 
 watch(
   () => page.value.background,
-  (pageBackground: string, oldPageBackground: string) => {
+  (pageBackground?: string, oldPageBackground?: string) => {
     emits('changed:pageBackground', { pageBackground, oldPageBackground })
   },
 )
 
 watch(
   () => page.value.orientation,
-  (pageOrientation: string, oldPageOrientation: string) => {
+  (pageOrientation?: string, oldPageOrientation?: string) => {
     emits('changed:pageOrientation', { pageOrientation, oldPageOrientation })
   },
 )
 
 watch(
   () => page.value.showToc,
-  (showToc: boolean) => {
+  (showToc?: boolean) => {
     emits('changed:pageShowToc', showToc)
   },
 )
 
 watch(
   () => page.value.zoomLevel,
-  (zoomLevel: number, oldZoomLevel: number) => {
+  (zoomLevel?: number, oldZoomLevel?: number) => {
     emits('changed:pageZoom', { zoomLevel, oldZoomLevel })
   },
 )
 
 watch(
   () => page.value.preview?.enabled,
-  (previewEnabled: boolean) => {
+  (previewEnabled?: boolean) => {
     emits('changed:pagePreview', previewEnabled)
   },
 )
@@ -630,7 +630,6 @@ const setLocale = (params: SupportedLocale) => {
 const getLocale = () => locale.value
 const getI18n = () => i18n
 
-// Export Methods
 const getImage = async (format: 'blob' | 'jpeg' | 'png' = 'blob') => {
   const { zoomLevel } = page.value
   try {
@@ -648,6 +647,7 @@ const getImage = async (format: 'blob' | 'jpeg' | 'png' = 'blob') => {
       return await toPng(node)
     }
   } catch {
+    /** @ts-ignore */
     throw new Error(t('export.image.error.message'))
   } finally {
     page.value.zoomLevel = zoomLevel
@@ -768,7 +768,8 @@ watch(
   },
 )
 
-watch(() => options.value.document.title, (title: string) => {
+watch(() => options.value.document?.title, (title?: string) => {
+  if (typeof title !== 'string') return
   $document.value.title = title
 })
 
@@ -794,8 +795,7 @@ provide('saveContent', saveContent)
 provide('setLocale', setLocale)
 provide('reset', reset)
 
-// Exposing Methods
-defineExpose({
+const expose = {
   getOptions: () => options.value,
   setOptions,
   setToolbar,
@@ -838,9 +838,13 @@ defineExpose({
   useConfirm,
   useMessage,
   destroy,
-})
-</script>
+}
 
+defineExpose(expose)
+
+export type UmoEditorExpose = typeof expose
+
+</script>
 <style lang="less">
 @import '@/assets/styles/index.less';
 

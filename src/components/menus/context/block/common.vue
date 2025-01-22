@@ -73,7 +73,7 @@ let menuActive = $ref(false)
 
 const popupProps = {
   onVisibleChange(visible: boolean) {
-    editor.value.commands.focus()
+    editor.value?.commands.focus()
     blockMenu.value = visible
     menuActive = visible
   },
