@@ -98,12 +98,28 @@ const { options, editor, imageViewer } = useStore()
 const { isLoading, error } = useImage({ src: node.attrs.src })
 
 import type { ComponentPublicInstance } from 'vue';
+import { debounce } from '@/utils/debounce';
 
 const containerRef = ref<ComponentPublicInstance | null>(null)
 const imageRef = $ref<HTMLImageElement | null>(null)
 let selected = $computed(() => editor.value?.isActive('image') && editor.value?.getAttributes('image').id === node.attrs.id)
 let maxWidth = $ref(0)
 let maxHeight = $ref(200)
+let newAttributes: { [key: string]: any } = {}
+
+const updateAllAttributes = debounce(
+  () => {
+    updateAttributes(newAttributes)
+    newAttributes = {}
+  },
+  1000,
+  (attrs: { [key: string]: any }) => {
+    newAttributes = {
+      ...newAttributes,
+      ...attrs
+    }
+  }
+)
 
 const nodeStyle = $computed(() => {
   const { nodeAlign, margin } = node.attrs
@@ -180,14 +196,16 @@ const onLoad = async () => {
 }
 
 const onRotate = ({ angle }: { angle: number }) => {
-  updateAttributes({ angle })
+  updateAllAttributes({ angle })
 }
+
 const onResize = ({ width, height }: { width: number; height: number }) => {
-  updateAttributes({
+  updateAllAttributes({
     width: width.toFixed(2),
-    height: height.toFixed(2),
+    height: height.toFixed(2)
   })
 }
+
 const onResizeStart = () => {
   editor.value?.commands.autoPaging(false)
 }
@@ -196,7 +214,7 @@ const onResizeEnd = () => {
 }
 
 const onDrag = ({ left, top }: { left: number; top: number }) => {
-  updateAttributes({ left, top })
+  updateAllAttributes({ left, top })
 }
 
 const openImageViewer = () => {

@@ -43,12 +43,29 @@
 </template>
 
 <script setup lang="ts">
+import { debounce } from '@/utils/debounce';
 import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import Drager from 'es-drager'
 
 interface LocalNodeViewProps extends NodeViewProps { }
 
 const { node, updateAttributes } = defineProps<LocalNodeViewProps>()
+
+let newAttributes = {}
+
+const updateAllAttributes = debounce(
+  () => {
+    updateAttributes(newAttributes)
+    newAttributes = {}
+  },
+  1000,
+  (attrs: { [key: string]: any }) => {
+    newAttributes = {
+      ...newAttributes,
+      ...attrs
+    }
+  }
+)
 
 const { options } = useStore()
 
@@ -61,13 +78,13 @@ const onBlur = () => {
 }
 
 const onRotate = ({ angle }: { angle: number }) => {
-  updateAttributes({ angle })
+  updateAllAttributes({ angle })
 }
 const onResize = ({ width, height }: { width: number; height: number }) => {
-  updateAttributes({ width, height })
+  updateAllAttributes({ width, height })
 }
 const onDrag = ({ left, top }: { left: number; top: number }) => {
-  updateAttributes({ left, top })
+  updateAllAttributes({ left, top })
 }
 
 onClickOutside(containerRef, () => { selected = false })
