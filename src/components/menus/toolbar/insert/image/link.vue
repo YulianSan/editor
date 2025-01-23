@@ -9,6 +9,9 @@
       @confirm="setImage" @close="dialogVisible = false">
       <div class="umo-link-container">
         <t-form label-align="top">
+          <t-form-item :label="t('insert.image_link.name')">
+            <t-input @blur="onBlur" v-model="form.name" type="text" clearable :placeholder="t('insert.image_link.nameTip')" />
+          </t-form-item>
           <t-form-item :label="t('insert.link.href')">
             <t-input @blur="onBlur" v-model="form.src" type="url" clearable :placeholder="t('insert.link.hrefTip')" />
           </t-form-item>
@@ -36,6 +39,7 @@ let dialogVisible = $ref(false)
 
 const form = reactive({
   src: '',
+  name: '',
   errors: {
     src: false
   }
@@ -73,6 +77,7 @@ const setImage = () => {
       ...(attrs ?? {}),
       src: urlPreview,
       originalSrc: form.errors.src ? form.src : null,
+      name: form.name
     }, true)
     .run()
 
@@ -85,6 +90,7 @@ watch(() => dialogVisible, () => {
   if (dialogVisible && src) {
     urlPreview = src
     form.src = src
+    form.name = attrs?.name
     onBlur()
     return
   }

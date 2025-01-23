@@ -137,6 +137,10 @@
       "wavy": "Linha Ondulada"
     },
     "image": "Imagem",
+    "image_link": {
+      "name": "Nome da Imagem",
+      "nameTip": "Nome da Imagem (opcional)"
+    },
     "link": {
       "editImage": "Editar Imagem",
       "image": "Inserir Link de Imagem",
