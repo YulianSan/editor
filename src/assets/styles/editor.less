@@ -446,6 +446,10 @@ div:not(.hide-editor):has(> div[id^=umo-editor-]) .umo-editor-container {
       max-height: 100%;
     }
 
+    &:has(.is-draggable) {
+      height: 0px !important;
+    }
+
     .umo-hover-shadow:hover {
       box-shadow: var(--umo-shadow);
     }
