@@ -542,7 +542,10 @@
     "title": "Document Map",
     "show": "Document Map",
     "hide": "Hide Document Map",
-    "empty": "No Document Map Available"
+    "empty": "No Document Map Available",
+    "paragraph": {
+      "empty": "Empty Paragraph"
+    }
   },
   "spellcheck": {
     "enable": "Enable Spell Check",

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { IMAGE, PARAGRAPH } from '@/extensions/page/node-names';
 import { Node } from '@tiptap/pm/model';
 import { NodeSelection, TextSelection } from '@tiptap/pm/state';
 
@@ -12,8 +13,7 @@ const validNodes = $computed(
   () => item.content?.content?.filter?.((i: Node) => !!i.attrs.id)
 )
 
-const onClick = (item: Node) => {
-
+const onClick = () => {
   const { container, editor } = useStore()
   if (validNodes.length) {
     visible.value = !visible.value
@@ -55,12 +55,20 @@ const onClick = (item: Node) => {
   }
 }
 
+const label = $computed(() => {
+  /** @ts-ignore */
+  if (item.type.name == PARAGRAPH) return item.firstChild?.text ?? t('toc.paragraph.empty')
+  if (item.type.name == IMAGE) return item.attrs?.name ?? 'nao mesmo'
+
+  return item.type.name
+})
+
 </script>
 <template>
   <div class="umo-toc-text">
-    <span @click="onClick(item)">
+    <span @click="onClick">
       <icon :name="item.type.name.toLowerCase().trim()" />
-      {{ item.type.name }}
+      {{ label }}
     </span>
     <Transition v-if="validNodes.length" name="fade">
       <container-toc-submenu v-show="visible" :content="item.content.content" />

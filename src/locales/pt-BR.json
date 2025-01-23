@@ -588,7 +588,10 @@
     "title": "Mapa do Documento",
     "show": "Mapa do Documento",
     "hide": "Esconder Mapa do Documento",
-    "empty": "Nenhum Mapa do Documento Disponível"
+    "empty": "Nenhum Mapa do Documento Disponível",
+    "paragraph": {
+      "empty": "Parágrafo vazio"
+    }
   },
   "spellcheck": {
     "enable": "Habilitar Verificação Ortográfica",

@@ -87,9 +87,11 @@ defineEmits(['close'])
         transform: translateY(-50%);
       }
       &:not(:has(.umo-toc-item:hover)):hover {
-        cursor: pointer;
         background: var(--umo-content-node-selected-background);
         color: var(--umo-primary-color);
+        > .umo-toc-text > span {
+          cursor: pointer;
+        }
         .umo-icon {
           color: var(--umo-primary-color);
           border-color: var(--umo-primary-color);
