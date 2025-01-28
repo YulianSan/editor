@@ -253,7 +253,7 @@ watch(
   .umo-page-node-content {
     flex: 1;
     box-sizing: border-box;
-    padding: 0 var(--umo-page-margin-right) 0 var(--umo-page-margin-right);
+    padding: 0 var(--umo-page-margin-right) 0 var(--umo-page-margin-left);
   }
 }
 </style>

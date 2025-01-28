@@ -1,6 +1,18 @@
 @import '@/assets/styles/_mixins.less';
 
 .hide-editor>.umo-editor-container {
+  .umo-footer {
+    display: none;
+  }
+
+  .umo-toolbar {
+    display: none;
+  }
+
+  .hide-render {
+    display: none;
+  }
+
   .umo-page-node-content {
 
     >p:not(.p-empty):has(br.ProseMirror-trailingBreak) {
@@ -220,6 +232,7 @@ div:not(.hide-editor):has(> div[id^=umo-editor-]) .umo-editor-container {
   }
 
   table {
+    line-height: inherit;
     border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
