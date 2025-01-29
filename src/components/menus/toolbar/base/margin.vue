@@ -83,9 +83,9 @@ const setMargin = () => {
 
 watch(
   () => popupVisible.value,
-  (visible: boolean) => {
+  (visible: boolean, oldVisible?: boolean) => {
     setMarginValue()
-    if (!visible && editor.value) {
+    if (!visible && oldVisible && editor.value) {
       editor.value.commands.focus()
     }
   },

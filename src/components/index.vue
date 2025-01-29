@@ -26,7 +26,7 @@
         </div>
         <toolbar
           :key="toolbarKey"
-          @menu-change="(event: any) => emits('menuChange', event)"
+          @menu-change="(event: any) => emits('changed:menu', event)"
         >
           <template
             v-for="item in options.toolbar?.menus"
@@ -112,7 +112,6 @@ const emits = defineEmits([
   'blur',
   'saved',
   'destroy',
-  'menuChange',
 ])
 
 // Store Setup

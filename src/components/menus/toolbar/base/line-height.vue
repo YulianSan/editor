@@ -16,6 +16,7 @@ const lineHeights = computed(() => {
   return options.value.dicts?.lineHeights.map((item: any) => {
     return {
       content: item.default
+        /** @ts-ignore */
         ? l(item.label) + t('base.lineHeight.default')
         : l(item.label),
       value: item.value,
