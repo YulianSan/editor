@@ -12,7 +12,7 @@ declare module '@tiptap/core' {
 
 export function validImage(url: string, timeoutT?: number) {
     return new Promise(function (resolve, reject) {
-        var timeout = timeoutT || 5000;
+        var timeout = timeoutT ?? 5000;
         var timer: NodeJS.Timeout, img = new Image();
 
         img.onerror = img.onabort = function () {
@@ -26,7 +26,7 @@ export function validImage(url: string, timeoutT?: number) {
         };
 
         timer = setTimeout(function () {
-            img.src = "//!!!!/test.jpg";
+            img.src = "";
             reject("timeout");
         }, timeout);
         img.src = url;
