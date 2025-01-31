@@ -591,6 +591,9 @@
     "empty": "Nenhum Mapa do Documento Disponível",
     "paragraph": {
       "empty": "Parágrafo vazio"
+    },
+    "image": {
+      "empty": "Imagem sem nome"
     }
   },
   "spellcheck": {

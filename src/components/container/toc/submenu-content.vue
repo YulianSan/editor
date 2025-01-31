@@ -58,7 +58,8 @@ const onClick = () => {
 const label = $computed(() => {
   /** @ts-ignore */
   if (item.type.name == PARAGRAPH) return item.firstChild?.text ?? t('toc.paragraph.empty')
-  if (item.type.name == IMAGE) return item.attrs?.name ?? 'nao mesmo'
+  /** @ts-ignore */
+  if (item.type.name == IMAGE) return item.attrs?.name ?? t('toc.image.empty')
 
   return item.type.name
 })
