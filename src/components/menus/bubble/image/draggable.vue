@@ -17,6 +17,8 @@ const toggleDraggable = () => {
   if (image) {
     editor.value?.commands.updateAttributes(image.type, {
       draggable: !image.attrs.draggable,
+      top: 0,
+      left: 0
     })
   }
 }

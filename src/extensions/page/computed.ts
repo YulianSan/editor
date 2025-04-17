@@ -668,7 +668,7 @@ export class PageComputedContext {
 
         splitContex.validNode = !!(node.type.name != PAGE && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty))
 
-        const result = (nodesComputed[node.type.name] || nodesComputed.default)(
+        const result = (nodesComputed?.[node.type.name] ?? nodesComputed.default)(
           splitContex,
           node,
           pos,
@@ -679,7 +679,6 @@ export class PageComputedContext {
           forcePageId,
           i,
         )
-
 
         if (node.type.name != PAGE && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty)) {
           splitContex.firstNode = false

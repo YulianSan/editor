@@ -48,7 +48,6 @@
         :top="Number(node.attrs.top)"
         :min-width="14"
         :min-height="14"
-        :max-width="maxWidth"
         :max-height="node.attrs.equalProportion ? maxHeight : undefined"
         :z-index="node.attrs.zIndex"
         :equal-proportion="node.attrs.equalProportion"
@@ -103,7 +102,6 @@ import { debounce } from '@/utils/debounce';
 const containerRef = ref<ComponentPublicInstance | null>(null)
 const imageRef = $ref<HTMLImageElement | null>(null)
 let selected = $computed(() => editor.value?.isActive('image') && editor.value?.getAttributes('image').id === node.attrs.id)
-let maxWidth = $ref(0)
 let maxHeight = $ref(200)
 let newAttributes: { [key: string]: any } = {}
 
@@ -133,10 +131,6 @@ const nodeStyle = $computed(() => {
     marginBottom,
     zIndex: selected ? 1000000 : node.attrs.draggable ? node.attrs.zIndex : 0,
   }
-})
-
-watch(() => node.attrs.draggable, () => {
-  updateAttributes({ top: 0, left: 0 })
 })
 
 const uploadImage = async () => {
@@ -174,7 +168,6 @@ const uploadImage = async () => {
 const onLoad = async () => {
   if (node.attrs.width === null) {
     const { clientWidth = 1, clientHeight = 1 } = imageRef ?? {}
-    maxWidth = containerRef.value?.$el.clientWidth
     const ratio = clientWidth / clientHeight
     maxHeight = containerRef.value?.$el.clientWidth / ratio
     updateAttributes({ width: (200 * ratio).toFixed(2) })
