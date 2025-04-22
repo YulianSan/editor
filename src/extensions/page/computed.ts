@@ -80,17 +80,21 @@ const c = (
   splitContex: SplitContext,
   dom: HTMLElement,
 ) => {
+  const { options } = useStore()
+
+  if (
+    !splitContex.validNode ||
+    !options.value?.contentIsValid?.(dom?.textContent ?? '')
+  ) {
+    return { height: 0, margin: 0 }
+  }
+
   let { height, margin } = getDomHeight(dom)
 
   if (splitContex.firstNode) {
     height = height - margin
   } else if (splitContex.validNode && margin == 0) {
     height = height + 12
-  }
-
-  if (!splitContex.validNode) {
-    height = 0
-    margin = 0
   }
 
   return { height, margin }

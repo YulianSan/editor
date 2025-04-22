@@ -394,6 +394,9 @@ const defaultOptions: UmoEditorOptions = {
       )
     })
   },
+  contentIsValid(_) {
+    return true
+  }
 }
 
 // 组件 props 所需格式
@@ -1038,6 +1041,15 @@ const objectSchema = new ObjectSchema({
     },
     required: false,
   },
+  contentIsValid: {
+    merge: 'replace',
+    validate(value: Function) {
+      if (!isFunction(value)) {
+        throw new Error('Key "contentIsValid" must be a async function.')
+      }
+    },
+    required: false
+  }
 })
 
 export { defaultOptions, objectSchema, propsOptions }

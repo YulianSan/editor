@@ -209,4 +209,5 @@ export interface UmoEditorOptions {
   onFileDelete?: CallableFunction
   onAssistant?: AsyncFunction
   onCustomImportWordMethod?: AsyncFunction
+  contentIsValid?: (content: string) => boolean
 }
