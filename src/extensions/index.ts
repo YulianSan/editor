@@ -58,6 +58,8 @@ import Video from './video'
 
 // Custom
 import BarCodeExtension from '@/extensions/bar-code'
+import DirectiveExtension from '@/extensions/directives'
+import suggestion from '@/extensions/directives/suggestion'
 
 export const extensions = (
   { dicts, document: doc, file }: any,
@@ -173,5 +175,8 @@ export const extensions = (
     Dropcursor.configure({
       color: 'var(--umo-primary-color)',
     }),
-    BarCodeExtension
+    BarCodeExtension,
+    DirectiveExtension.configure({
+      suggestion,
+    })
   ]

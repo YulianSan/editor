@@ -396,7 +396,8 @@ const defaultOptions: UmoEditorOptions = {
   },
   contentIsValid(_) {
     return true
-  }
+  },
+  directives: []
 }
 
 // 组件 props 所需格式
@@ -1049,6 +1050,11 @@ const objectSchema = new ObjectSchema({
       }
     },
     required: false
+  },
+  directives: {
+    merge: 'replace',
+    validate: 'array',
+    required: false,
   }
 })
 

@@ -210,4 +210,5 @@ export interface UmoEditorOptions {
   onAssistant?: AsyncFunction
   onCustomImportWordMethod?: AsyncFunction
   contentIsValid?: (content: string) => boolean
+  directives?: string[]
 }
