@@ -150,6 +150,7 @@
       "hrefText": "Texto do Link:",
       "hrefTextTip": "Digite ou selecione o texto do link",
       "href": "URL do Link:",
+      "hrefDefault": "URL default:",
       "hrefTip": "Insira a URL do link, geralmente começando com http:// ou https://"
     },
     "math": "Matemática",

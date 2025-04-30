@@ -15,6 +15,9 @@
           <t-form-item :label="t('insert.link.href')">
             <t-input @blur="onBlur" v-model="form.src" type="url" clearable :placeholder="t('insert.link.hrefTip')" />
           </t-form-item>
+          <t-form-item :label="t('insert.link.hrefDefault')">
+            <t-input @blur="onBlur" v-model="form.defaultSrc" type="url" clearable :placeholder="t('insert.link.hrefTip')" />
+          </t-form-item>
         </t-form>
         <div class="umo-preview-image-render">
           <div class="umo-preview-title" v-text="t('tools.barcode.preview')"></div>
@@ -37,15 +40,16 @@ const { attrs } = defineProps<{
 
 let dialogVisible = $ref(false)
 
+const IMAGE_PLACEHOLDER = 'https://dummyimage.com/100x100/eee/aaa'
+
 const form = reactive({
   src: '',
+  defaultSrc: '',
   name: '',
   errors: {
     src: false
   }
 })
-
-const IMAGE_PLACEHOLDER = 'https://dummyimage.com/100x100/eee/aaa'
 
 let urlPreview = $ref(IMAGE_PLACEHOLDER)
 
@@ -57,14 +61,14 @@ const onBlur = async () => {
       urlPreview = form.src
     } catch (e) {
       form.errors.src = true
-      urlPreview = IMAGE_PLACEHOLDER
+      urlPreview = form.defaultSrc
     }
 
     return;
   }
 
   form.errors.src = true
-  urlPreview = IMAGE_PLACEHOLDER
+  urlPreview = form.defaultSrc
 }
 
 const setImage = () => {
@@ -76,6 +80,7 @@ const setImage = () => {
       type: 'image-url',
       ...(attrs ?? {}),
       src: urlPreview,
+      defaultSrc: form.defaultSrc,
       originalSrc: form.errors.src ? form.src : null,
       name: form.name
     }, true)
@@ -86,6 +91,8 @@ const setImage = () => {
 
 watch(() => dialogVisible, () => {
   const src = attrs?.originalSrc ?? attrs?.src
+  const defaultSrc = attrs?.defaultSrc ?? IMAGE_PLACEHOLDER
+  form.defaultSrc = defaultSrc
 
   if (dialogVisible && src) {
     urlPreview = src
@@ -95,7 +102,7 @@ watch(() => dialogVisible, () => {
     return
   }
 
-  urlPreview = IMAGE_PLACEHOLDER
+  urlPreview = form.defaultSrc
   form.src = ''
   form.errors.src = false
 })

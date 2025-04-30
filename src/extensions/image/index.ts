@@ -49,6 +49,9 @@ export default ImageExtension.extend({
       name: {
         default: null,
       },
+      defaultSrc: {
+        default: null,
+      },
       originalSrc: {
         default: null
       },
