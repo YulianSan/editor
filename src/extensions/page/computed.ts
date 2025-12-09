@@ -83,8 +83,7 @@ const c = (
   const { options } = useStore()
 
   if (
-    !splitContex.validNode ||
-    !options.value?.contentIsValid?.(dom?.textContent ?? '')
+    !splitContex.validNode
   ) {
     return { height: 0, margin: 0 }
   }
@@ -670,7 +669,12 @@ export class PageComputedContext {
             ) || !options.value.document?.readOnly
           )
 
-        splitContex.validNode = !!(node.type.name != PAGE && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty))
+
+        const contentValid = options.value?.contentIsValid?.(dom?.textContent ?? '') ?? true
+        const elementValid = !!(node.type.name != PAGE
+          && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty))
+
+        splitContex.validNode = contentValid && elementValid
 
         const result = (nodesComputed?.[node.type.name] ?? nodesComputed.default)(
           splitContex,
@@ -684,7 +688,7 @@ export class PageComputedContext {
           i,
         )
 
-        if (node.type.name != PAGE && (elementNoDraggable || paragraphNoEmptyAfterBlade || paragraphEmpty)) {
+        if (splitContex.validNode) {
           splitContex.firstNode = false
         }
 
